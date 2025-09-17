@@ -1,0 +1,5 @@
+[
+  { "id": 1, "nombre": "Juan Perez", "edad": 30, "historiaClinica": "Antecedentes de hipertensión arterial. Consulta por dolor de cabeza frecuente." },
+  { "id": 2, "nombre": "Maria Gomez", "edad": 25, "historiaClinica": "Sin antecedentes relevantes. Consulta por control anual y vacunación." },
+  { "id": 3, "nombre": "Carlos Sanchez", "edad": 40, "historiaClinica": "Diabético tipo 2. Consulta por revisión de medicación y análisis de laboratorio." }
+]

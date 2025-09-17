@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "tipo": "Alta de turno",
+    "estado": "pendiente",
+    "fechaInicio": "2025-09-20T09:00:00",
+    "fechaFin": null,
+    "prioridad": "alta",
+    "idEmpleadoResponsable": 3,
+    "idTurno": 1,
+    "idPaciente": 1,
+    "observaciones": "Consultorio 2, control anual",
+    "area": "Administración de Turnos"
+  },
+  {
+    "id": 2,
+    "tipo": "Reprogramación",
+    "estado": "en proceso",
+    "fechaInicio": "2025-09-21T10:00:00",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": 2,
+    "idTurno": 1,
+    "idPaciente": 1,
+    "observaciones": "Paciente solicitó cambio de horario",
+    "area": "Administración de Turnos"
+  }
+]
