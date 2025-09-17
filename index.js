@@ -10,7 +10,7 @@ app.use(express.json());
 app.use("/turnos", turnoRoutes);
 app.use("/empleados", empleadoRoutes);
 
-// Servidor en escucha hello world
+// Servidor en escucha
 app.listen(PORT, ()=>{
   console.log(`Servidor corriendo en http://localhost:`);
 });
