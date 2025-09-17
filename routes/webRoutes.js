@@ -5,7 +5,7 @@ const TurnoModel = require('../models/TurnoModel');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render("index", {titulo: "Panel"});
+    res.render("home", {titulo: "Menu principal"});
 });
 
 //Listados
