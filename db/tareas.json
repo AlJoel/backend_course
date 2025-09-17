@@ -24,5 +24,31 @@
     "idPaciente": 1,
     "observaciones": "Paciente solicitó cambio de horario",
     "area": "Administración de Turnos"
+  },
+  {
+    "id": 3,
+    "tipo": "Carga de nuevo insumo al stock",
+    "estado": "pendiente",
+    "fechaInicio": "2025-09-21T9:00:00",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": 2,
+    "idTurno": 1,
+    "idPaciente": 1,
+    "observaciones": "Carga de insumo al stock",
+    "area": "Gestión de Insumos Médicos"
+  },
+  {
+    "id": 4,
+    "tipo": "Control de vencimientos",
+    "estado": "en proceso",
+    "fechaInicio": "2025-09-21T8:00:00",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": 2,
+    "idTurno": 1,
+    "idPaciente": 1,
+    "observaciones": "Se controla vencimiento de insumos",
+    "area": "Gestión de Insumos Médicos"
   }
 ]
