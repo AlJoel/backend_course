@@ -1,0 +1,42 @@
+extends ../layout
+
+block content
+  h1= titulo
+  form(action="/turnos/agregar" method="post")
+    label(for="id") ID
+    input#id(type="number" name="id" required)
+    br
+
+    label(for="pacienteId") Paciente ID
+    input#pacienteId(type="number" name="pacienteId" required)
+    br
+
+    label(for="dia") Día
+    input#dia(type="date" name="dia" required)
+    br
+
+    label(for="hora") Hora
+    input#hora(type="time" name="hora" required)
+    br
+
+    label(for="motivo") Motivo
+    input#motivo(type="text" name="motivo")
+    br
+
+    label(for="medicoAsignado") Médico asignado
+    input#medicoAsignado(type="text" name="medicoAsignado")
+    br
+
+    // campos opcionales que tu controlador usa para crear tarea asociada
+    label(for="idEmpleadoResponsable") Empleado responsable (opcional)
+    input#idEmpleadoResponsable(type="number" name="idEmpleadoResponsable")
+    br
+
+    label(for="prioridad") Prioridad (opcional)
+    select#prioridad(name="prioridad")
+      option(value="baja") baja
+      option(value="media" selected) media
+      option(value="alta") alta
+    br
+
+    button(type="submit") Guardar

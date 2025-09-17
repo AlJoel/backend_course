@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  h1= titulo
+  a(href="/turnos/nuevo") + Nuevo turno
+  if turnos && turnos.length
+    table
+      thead
+        tr
+          th ID
+          th Paciente
+          th Día
+          th Hora
+          th Motivo
+          th Médico
+      tbody
+        each t in turnos
+          tr
+            td= t.id
+            td= t.pacienteId
+            td= t.dia
+            td= t.hora
+            td= t.motivo
+            td= t.medicoAsignado
+  else
+    p No hay turnos cargados.

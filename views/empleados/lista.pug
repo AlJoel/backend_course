@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  h1= titulo
+  a(href="/empleados/nuevo") + Nuevo empleado
+  if empleados && empleados.length
+    table
+      thead
+        tr
+          th ID
+          th Nombre
+          th DNI
+          th Rol
+          th Área
+      tbody
+        each e in empleados
+          tr
+            td= e.id
+            td= e.nombre
+            td= e.dni
+            td= e.rol
+            td= e.area
+  else
+    p No hay empleados cargados.
