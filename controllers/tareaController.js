@@ -5,7 +5,13 @@ const getTareas = (req, res) => {
 }
 
 const buscar = (req, res) => {
-    const { estado, prioridad, fechaInicio, idEmpleadoResponsable, idPaciente } = req.body || {};
+    const {
+        estado,
+        prioridad,
+        fechaInicio,
+        idEmpleadoResponsable,
+        idPaciente
+    } = req.query || {}
     const tareas = TareaModel.getAll() || [];
 
     const resultado = tareas.filter(t => {
