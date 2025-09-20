@@ -3,6 +3,8 @@ const path = require("path");
 const webRoutes = require("./routes/webRoutes");
 const turnoRoutes = require("./routes/turnoRoutes");
 const empleadoRoutes = require("./routes/empleadoRoutes");
+const tareasRoutes = require('./routes/tareasRoutes');
+
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +19,7 @@ app.use(express.json());
 app.use("/", webRoutes);
 app.use("/turnos", turnoRoutes);
 app.use("/empleados", empleadoRoutes);
+app.use('/tareas', tareasRoutes);
 
 // Servidor en escucha
 app.listen(PORT, ()=>{
