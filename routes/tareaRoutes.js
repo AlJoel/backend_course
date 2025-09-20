@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const tareasCtrl = require('../controllers/tareaController');
+const { buscar} = require('../controllers/tareaController');
 
-router.get('/buscar', tareasCtrl.buscar);
+router.get('/buscar', buscar);
 
 module.exports = router;
