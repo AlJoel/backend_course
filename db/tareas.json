@@ -50,5 +50,56 @@
     "idPaciente": 1,
     "observaciones": "Se controla vencimiento de insumos",
     "area": "Gestión de Insumos Médicos"
+  },
+  {
+    "tipo": "Alta de turno",
+    "estado": "pendiente",
+    "fechaInicio": "2025-09-20T00:14:47.371Z",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": null,
+    "idTurno": 3,
+    "idPaciente": 1,
+    "observaciones": "Diabetes",
+    "area": "Administración de Turnos",
+    "id": 5
+  },
+  {
+    "tipo": "Actualización parcial de turno",
+    "estado": "en proceso",
+    "fechaInicio": "2025-09-20T00:18:39.932Z",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": null,
+    "idTurno": 1,
+    "observaciones": "Control de presión arterial",
+    "area": "Administración de Turnos",
+    "id": 6
+  },
+  {
+    "tipo": "Alta de turno",
+    "estado": "pendiente",
+    "fechaInicio": "2025-09-20T00:24:24.388Z",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": null,
+    "idTurno": 4,
+    "idPaciente": 1,
+    "observaciones": "Diabetes",
+    "area": "Administración de Turnos",
+    "id": 7
+  },
+  {
+    "tipo": "Actualización parcial de turno",
+    "estado": "en proceso",
+    "fechaInicio": "2025-09-20T01:09:20.013Z",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": null,
+    "idTurno": 4,
+    "idPaciente": 1,
+    "observaciones": "Diabetes",
+    "area": "Administración de Turnos",
+    "id": 8
   }
 ]

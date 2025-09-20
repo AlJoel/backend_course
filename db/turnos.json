@@ -1,5 +1,39 @@
 [
-  { "id": 1, "paciente": "Juan Perez", "dia": "2025-09-15", "hora": "10:00", "motivo": "Control de presión arterial" },
-  { "id": 2, "paciente": "Maria Gomez", "dia": "2025-09-16", "hora": "11:30", "motivo": "Vacunación anual" },
-  { "id": 3, "paciente": "Carlos Sanchez", "dia": "2025-09-17", "hora": "09:15", "motivo": "Revisión de medicación" }
+  {
+    "id": 1,
+    "paciente": "Juan Perez",
+    "dia": "2025-09-15",
+    "hora": "12:30",
+    "motivo": "Control de presión arterial"
+  },
+  {
+    "id": 2,
+    "paciente": "Maria Gomez",
+    "dia": "2025-09-16",
+    "hora": "11:30",
+    "motivo": "Vacunación anual"
+  },
+  {
+    "id": 3,
+    "paciente": "Carlos Sanchez",
+    "dia": "2025-09-17",
+    "hora": "09:15",
+    "motivo": "Revisión de medicación"
+  },
+  {
+    "id": 3,
+    "pacienteId": 1,
+    "dia": "2025-09-19",
+    "hora": "20:00",
+    "motivo": "Diabetes",
+    "medicoAsignado": null
+  },
+  {
+    "id": 4,
+    "pacienteId": 1,
+    "dia": "2025-09-12",
+    "hora": "20:00",
+    "motivo": "Diabetes",
+    "medicoAsignado": null
+  }
 ]

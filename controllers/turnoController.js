@@ -46,7 +46,7 @@ const updateTurno = (req, res) => {
         fechaInicio: new Date().toISOString(),
         fechaFin: null,
         prioridad: prioridad || "media",
-        idEmpleadoResponsable: idEmpleadoResponsable || null,
+        idEmpleadoResponsable: idEmpleadoResponsable ?? null,
         idTurno: actualizado.id,
         idPaciente: pacienteId,
         observaciones: motivo,
@@ -66,6 +66,9 @@ const patchTurno = (req, res) => {
     if (!actualizado) {
         return res.status(404).json({ mensaje: "Turno no encontrado" });
     }
+    const prioridad = campos?.prioridad ?? "media";
+    const idEmpleadoResponsable = campos?.idEmpleadoResponsable ?? null;
+    const motivo = campos?.motivo ?? actualizado.motivo;
 
     // Crear tarea actualización parcial
     const nuevaTarea = {
@@ -73,11 +76,11 @@ const patchTurno = (req, res) => {
         estado: "en proceso",
         fechaInicio: new Date().toISOString(),
         fechaFin: null,
-        prioridad: campos.prioridad || "media",
-        idEmpleadoResponsable: campos.idEmpleadoResponsable || null,
+        prioridad: prioridad,
+        idEmpleadoResponsable: idEmpleadoResponsable,
         idTurno: actualizado.id,
         idPaciente: actualizado.pacienteId,
-        observaciones: campos.motivo || actualizado.motivo,
+        observaciones: motivo,
         area: "Administración de Turnos"
     };
     TareaModel.add(nuevaTarea);
