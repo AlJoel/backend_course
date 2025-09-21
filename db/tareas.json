@@ -101,5 +101,44 @@
     "observaciones": "Diabetes",
     "area": "Administración de Turnos",
     "id": 8
+  },
+  {
+    "tipo": "Alta de turno",
+    "estado": "pendiente",
+    "fechaInicio": "2025-09-21T02:05:49.177Z",
+    "fechaFin": null,
+    "prioridad": "alta",
+    "idEmpleadoResponsable": "4",
+    "idTurno": 343,
+    "idPaciente": "4",
+    "observaciones": "345345345",
+    "area": "Administración de Turnos",
+    "id": 9
+  },
+  {
+    "tipo": "Alta de turno",
+    "estado": "pendiente",
+    "fechaInicio": "2025-09-21T02:06:58.941Z",
+    "fechaFin": null,
+    "prioridad": "alta",
+    "idEmpleadoResponsable": "4",
+    "idTurno": 343,
+    "idPaciente": "4",
+    "observaciones": "345345345",
+    "area": "Administración de Turnos",
+    "id": 10
+  },
+  {
+    "tipo": "Alta de turno",
+    "estado": "pendiente",
+    "fechaInicio": "2025-09-21T02:08:16.475Z",
+    "fechaFin": null,
+    "prioridad": "alta",
+    "idEmpleadoResponsable": "1",
+    "idTurno": 1211,
+    "idPaciente": "111",
+    "observaciones": "Enfermedad",
+    "area": "Administración de Turnos",
+    "id": 11
   }
 ]
