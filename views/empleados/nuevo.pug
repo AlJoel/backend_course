@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   h1= titulo
-  //- El form hace POST contra tu endpoint API existente
+
   form(action="/empleados/agregar" method="post")
     label(for="id") ID
     input#id(type="number" name="id" required)
