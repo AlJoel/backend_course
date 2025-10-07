@@ -5,12 +5,20 @@ import webRoutes from './routes/webRoutes.js';
 import turnoRoutes from './routes/turnoRoutes.js';
 import empleadoRoutes from './routes/empleadoRoutes.js';
 import tareaRoutes from './routes/tareaRoutes.js';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+
+dotenv.config();
+
+mongoose.connect(process.env.MONGODB_URI)
+.then(() => console.log('Conectado a MongoDB'))
+.catch(err => console.error('Error al conectar a MongoDB:', err));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 

@@ -11,8 +11,8 @@ const getEmpleados = async (req, res) => {
 
 const addEmpleado = async (req, res) => {
     try {
-        const { id, nombre, dni, rol, area } = req.body;
-        const nuevoEmpleado = await EmpleadoModel.add(id, nombre, dni, rol, area);
+    const { nombre, dni, rol, area } = req.body;
+    const nuevoEmpleado = await EmpleadoModel.add(nombre, dni, rol, area);
         res.status(201).json({
             mensaje: "Empleado agregado",
             empleado: nuevoEmpleado
@@ -58,7 +58,7 @@ const patchEmpleado = async (req, res) => {
 
 const deleteEmpleado = async (req, res) => {
     try {
-        const id = parseInt(req.params.id);
+        const id = req.params.id; 
         const eliminado = await EmpleadoModel.remove(id);
         if (!eliminado) {
             return res.status(404).json({ mensaje: "Empleado no encontrado" });

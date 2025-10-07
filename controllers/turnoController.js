@@ -12,8 +12,8 @@ const getTurnos = async (req, res) => {
 
 const addTurno = async (req, res) => {
     try {
-        const { id, pacienteId, dia, hora, motivo, medicoAsignado, idEmpleadoResponsable, prioridad } = req.body;
-        const nuevoTurno = await TurnoModel.add(id, pacienteId, dia, hora, motivo, medicoAsignado);
+    const { pacienteId, dia, hora, motivo, medicoAsignado, idEmpleadoResponsable, prioridad } = req.body;
+    const nuevoTurno = await TurnoModel.add(pacienteId, dia, hora, motivo, medicoAsignado);
 
         // Crear tarea asociada alta de turno
         const nuevaTarea = {
@@ -26,7 +26,7 @@ const addTurno = async (req, res) => {
             idTurno: nuevoTurno.id,
             idPaciente: pacienteId,
             observaciones: motivo,
-            area: "Administraci\u00f3n de Turnos"
+            area: "Administración de Turnos"
         };
         await TareaModel.add(nuevaTarea);
 
@@ -50,7 +50,7 @@ const updateTurno = async (req, res) => {
 
         // Crear tarea de reprogramacion
         const nuevaTarea = {
-            tipo: "Reprogramaci\u00f3n o modificaci\u00f3n de turno",
+            tipo: "Reprogramación o modificación de turno",
             estado: "en proceso",
             fechaInicio: new Date().toISOString(),
             fechaFin: null,
@@ -59,7 +59,7 @@ const updateTurno = async (req, res) => {
             idTurno: actualizado.id,
             idPaciente: pacienteId,
             observaciones: motivo,
-            area: "Administraci\u00f3n de Turnos"
+            area: "Administración de Turnos"
         };
         await TareaModel.add(nuevaTarea);
         res.json({
@@ -85,7 +85,7 @@ const patchTurno = async (req, res) => {
 
         // Crear tarea actualizacicion parcial
         const nuevaTarea = {
-            tipo: "Actualizaci\u00f3n parcial de turno",
+            tipo: "Actualización parcial de turno",
             estado: "en proceso",
             fechaInicio: new Date().toISOString(),
             fechaFin: null,
@@ -94,7 +94,7 @@ const patchTurno = async (req, res) => {
             idTurno: actualizado.id,
             idPaciente: actualizado.pacienteId,
             observaciones: motivo,
-            area: "Administraci\u00f3n de Turnos"
+            area: "Administración de Turnos"
         };
         await TareaModel.add(nuevaTarea);
         res.json({
@@ -108,7 +108,7 @@ const patchTurno = async (req, res) => {
 
 const deleteTurno = async (req, res) => {
     try {
-        const id = parseInt(req.params.id);
+        const id = req.params.id;
         const eliminado = await TurnoModel.remove(id);
         if (!eliminado) {
             return res.status(404).json({ mensaje: "Turno no encontrado" });
@@ -116,7 +116,7 @@ const deleteTurno = async (req, res) => {
 
         // Crear tarea cancelacion
         const nuevaTarea = {
-            tipo: "Cancelaci\u00f3n de turno",
+            tipo: "Cancelación de turno",
             estado: "finalizada",
             fechaInicio: new Date().toISOString(),
             fechaFin: new Date().toISOString(),
@@ -125,7 +125,7 @@ const deleteTurno = async (req, res) => {
             idTurno: eliminado.id,
             idPaciente: eliminado.pacienteId,
             observaciones: eliminado.motivo,
-            area: "Administraci\u00f3n de Turnos"
+            area: "Administración de Turnos"
         };
         await TareaModel.add(nuevaTarea);
         return res.status(200).json({

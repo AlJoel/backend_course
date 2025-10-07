@@ -32,8 +32,16 @@ router.get("/empleados/nuevo", (req, res) => {
    res.render("empleados/nuevo", {titulo:"Nuevo empleado"});
 });
 
-router.get("/turnos/nuevo", (req, res) => {
-    res.render("turnos/nuevo", {titulo:"Nuevo turno"});
+router.get("/turnos/nuevo", async (req, res) => {
+    try {
+        const empleados = await EmpleadoModel.getAll();
+        const medicos = empleados
+            .filter(e => e.rol === 'Médico')
+            .map(e => ({ id: e._id, nombre: e.nombre }));
+        res.render("turnos/nuevo", { titulo: "Nuevo turno", medicos });
+    } catch (err) {
+        res.status(500).send('Error al preparar formulario de nuevo turno');
+    }
 });
 
 export default router;

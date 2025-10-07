@@ -7,7 +7,6 @@ block content
     table
       thead
         tr
-          th ID
           th Paciente
           th Día
           th Hora
@@ -16,11 +15,15 @@ block content
       tbody
         each t in turnos
           tr
-            td= t.id
             td= t.pacienteId
             td= t.dia
             td= t.hora
             td= t.motivo
-            td= t.medicoAsignado
+            if t.medicoAsignado && t.medicoAsignado.nombre
+              td= t.medicoAsignado.nombre
+            else if t.medicoAsignado
+              td= t.medicoAsignado
+            else
+              td Sin médico
   else
     p No hay turnos cargados.

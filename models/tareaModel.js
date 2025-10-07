@@ -1,47 +1,34 @@
-import { promises as fs } from 'fs';
+import mongoose from 'mongoose';
 
-const TAREAS_PATH = './db/tareas.json';
+const tareaSchema = new mongoose.Schema(
+    {
+        tipo: { type: String },
+        estado: { type: String },
+        fechaInicio: { type: String },
+        fechaFin: { type: String, default: null },
+        prioridad: { type: String, default: 'media' },
+        idEmpleadoResponsable: { type: mongoose.Schema.Types.Mixed, default: null },
+        idTurno: { type: mongoose.Schema.Types.Mixed, default: null },
+        idPaciente: { type: mongoose.Schema.Types.Mixed, default: null },
+        observaciones: { type: String, default: '' },
+        area: { type: String, default: '' }
+    });
 
-class TareaModel {
-    async _readFile() {
-        const data = await fs.readFile(TAREAS_PATH, 'utf-8');
-        return JSON.parse(data);
+const Tarea = mongoose.model('Tarea', tareaSchema);
+
+    async function getAll() {
+        const docs = await Tarea.find().sort({ createdAt: 1 }).lean();
+        return docs.map((d) => ({ ...d, id: d._id }));
     }
 
-    async _writeFile(data) {
-        await fs.writeFile(TAREAS_PATH, JSON.stringify(data, null, 2), 'utf-8');
+    async function add(tarea) {
+        const nuevaTarea = new Tarea(tarea);
+        return await nuevaTarea.save();
     }
 
-    async getAll() {
-        return await this._readFile();
-    }
+const TareaModel = {
+    getAll,
+    add
+};
 
-    async add(tarea) {
-        const tareas = await this._readFile();
-        tarea.id = tareas.length > 0 ? tareas[tareas.length - 1].id + 1 : 1;
-        tareas.push(tarea);
-        await this._writeFile(tareas);
-        return tarea;
-    }
-
-    async update(id, campos) {
-        const tareas = await this._readFile();
-        const index = tareas.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        tareas[index] = { ...tareas[index], ...campos };
-        await this._writeFile(tareas);
-        return tareas[index];
-    }
-
-    async remove(id) {
-        const tareas = await this._readFile();
-        const index = tareas.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        const eliminado = tareas[index];
-        tareas.splice(index, 1);
-        await this._writeFile(tareas);
-        return eliminado;
-    }
-}
-
-export default new TareaModel();
+export default TareaModel;

@@ -1,69 +1,51 @@
-import { promises as fs } from 'fs';
-const EMPLEADOS_PATH = './db/empleados.json';
+import mongoose from 'mongoose';
 
-class EmpleadoModel {
-    constructor() {}
+const empleadoSchema = new mongoose.Schema(
+    {
+        nombre: { type: String },
+        dni: { type: String },
+        rol: { type: String }
+    });
 
-    async _readFile() {
-        const data = await fs.readFile(EMPLEADOS_PATH, 'utf-8');
-        return JSON.parse(data);
-    }
+const Empleado = mongoose.model('Empleado', empleadoSchema);
 
-    async _writeFile(data) {
-        await fs.writeFile(EMPLEADOS_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    }
-
-    async getAll() {
-        return await this._readFile();
-    }
-
-    async add(id, nombre, dni, rol, area) {
-        const empleados = await this._readFile();
-        const nuevoEmpleado = {
-            id: parseInt(id),
-            nombre,
-            dni,
-            rol,
-            area
-        };
-        empleados.push(nuevoEmpleado);
-        await this._writeFile(empleados);
-        return nuevoEmpleado;
-    }
-
-    async update(id, nombre, dni, rol, area) {
-        const empleados = await this._readFile();
-        const index = empleados.findIndex(e => e.id === parseInt(id));
-        if (index === -1) return null;
-        empleados[index] = {
-            id: parseInt(id),
-            nombre,
-            dni,
-            rol,
-            area
-        };
-        await this._writeFile(empleados);
-        return empleados[index];
-    }
-
-    async patch(id, campos) {
-        const empleados = await this._readFile();
-        const index = empleados.findIndex(e => e.id === parseInt(id));
-        if (index === -1) return null;
-        empleados[index] = { ...empleados[index], ...campos };
-        await this._writeFile(empleados);
-        return empleados[index];
-    }
-
-    async remove(id) {
-        const empleados = await this._readFile();
-        const index = empleados.findIndex(e => e.id === parseInt(id));
-        if (index === -1) return null;
-        const eliminado = empleados[index];
-        empleados.splice(index, 1);
-        await this._writeFile(empleados);
-        return eliminado;
-    }
+async function getAll() {
+    return await Empleado.find().lean();
 }
 
-export default new EmpleadoModel();
+async function add(nombre, dni, rol) {
+    const nuevoEmpleado = new Empleado({ nombre, dni, rol });
+    return await nuevoEmpleado.save();
+}
+
+async function update(id, nombre, dni, rol, area) {
+    const updated = await Empleado.findByIdAndUpdate(
+        id,
+        { nombre, dni, rol, area },
+        { new: true }
+    ).lean();
+    if (!updated) return null;
+    updated.id = updated._id;
+    return updated;
+}
+
+async function patch(id, campos) {
+    const updated = await Empleado.findByIdAndUpdate(id, campos, { new: true }).lean();
+    if (!updated) return null;
+    updated.id = updated._id;
+    return updated;
+}
+
+async function remove(id) {
+    return await Empleado.findByIdAndDelete(id);
+}
+
+const EmpleadoModel = {
+    getAll,
+    add,
+    update,
+    patch,
+    remove
+};
+
+export default EmpleadoModel;

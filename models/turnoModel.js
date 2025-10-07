@@ -1,71 +1,58 @@
-import { promises as fs } from 'fs';
-const TURNOS_PATH = './db/turnos.json';
+import mongoose from 'mongoose';
 
-class TurnoModel {
-    constructor() {}
+const turnoSchema = new mongoose.Schema(
+    {
+        pacienteId: { type: Number, default: null },
+        dia: { type: String },
+        hora: { type: String },
+        motivo: { type: String },
+        medicoAsignado: { type: mongoose.Schema.Types.ObjectId, ref: 'Empleado', default: null }
+    });
 
-    async _readFile() {
-        const data = await fs.readFile(TURNOS_PATH, 'utf-8');
-        return JSON.parse(data);
-    }
+const Turno = mongoose.model('Turno', turnoSchema);
 
-    async _writeFile(data) {
-        await fs.writeFile(TURNOS_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    }
 
-    async getAll() {
-        return await this._readFile();
-    }
-
-    async add(id, pacienteId, dia, hora, motivo, medicoAsignado) {
-        const turnos = await this._readFile();
-        const nuevoTurno = {
-            id: parseInt(id),
-            pacienteId: pacienteId !== undefined ? parseInt(pacienteId) : null,
-            dia,
-            hora,
-            motivo,
-            medicoAsignado: medicoAsignado !== undefined ? parseInt(medicoAsignado) : null
-        };
-        turnos.push(nuevoTurno);
-        await this._writeFile(turnos);
-        return nuevoTurno;
-    }
-
-    async update(id, pacienteId, dia, hora, motivo, medicoAsignado) {
-        const turnos = await this._readFile();
-        const index = turnos.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        turnos[index] = {
-            id: parseInt(id),
-            pacienteId: pacienteId !== undefined ? parseInt(pacienteId) : null,
-            dia,
-            hora,
-            motivo,
-            medicoAsignado: medicoAsignado !== undefined ? parseInt(medicoAsignado) : null
-        };
-        await this._writeFile(turnos);
-        return turnos[index];
-    }
-
-    async patch(id, campos) {
-        const turnos = await this._readFile();
-        const index = turnos.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        turnos[index] = { ...turnos[index], ...campos };
-        await this._writeFile(turnos);
-        return turnos[index];
-    }
-
-    async remove(id) {
-        const turnos = await this._readFile();
-        const index = turnos.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        const eliminado = turnos[index];
-        turnos.splice(index, 1);
-        await this._writeFile(turnos);
-        return eliminado;
-    }
+async function getAll() {
+    return await Turno.find().lean();
 }
 
-export default new TurnoModel();
+async function add(pacienteId, dia, hora, motivo, medicoAsignado) {
+    const nuevoTurno = new Turno({ pacienteId, dia, hora, motivo, medicoAsignado });
+    return await nuevoTurno.save();
+}
+
+async function update(id, pacienteId, dia, hora, motivo, medicoAsignado) {
+    const pacienteNum = pacienteId !== undefined && pacienteId !== null && pacienteId !== '' ? parseInt(pacienteId) : null;
+    const updated = mongoose.Types.ObjectId.isValid(id)
+        ? await Turno.findByIdAndUpdate(id, { pacienteId: pacienteNum, dia, hora, motivo, medicoAsignado }, { new: true }).lean()
+        : null;
+    if (!updated) return null;
+    updated.id = updated._id;
+    return updated;
+}
+
+async function patch(id, campos) {
+    if (campos.pacienteId !== undefined) campos.pacienteId = campos.pacienteId === '' ? null : parseInt(campos.pacienteId);
+    // no parsear medicoAsignado a number; permitir string/ObjectId/null
+    if (campos.medicoAsignado !== undefined) campos.medicoAsignado = campos.medicoAsignado === '' ? null : campos.medicoAsignado;
+    const updated = mongoose.Types.ObjectId.isValid(id)
+        ? await Turno.findByIdAndUpdate(id, campos, { new: true }).lean()
+        : null;
+    if (!updated) return null;
+    updated.id = updated._id;
+    return updated;
+}
+
+async function remove(id) {
+    return await Turno.findByIdAndDelete(id);
+}
+
+const TurnoModel = {
+    getAll,
+    add,
+    update,
+    patch,
+    remove
+};
+
+export default TurnoModel;
