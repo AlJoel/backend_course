@@ -33,5 +33,12 @@
     "dni": "asd",
     "rol": "awawd",
     "area": "dasd"
+  },
+  {
+    "id": 1,
+    "nombre": "Carlos",
+    "dni": "12345",
+    "rol": "Administrativo",
+    "area": "Administracion"
   }
 ]

@@ -35,5 +35,13 @@
     "hora": "20:00",
     "motivo": "Diabetes",
     "medicoAsignado": null
+  },
+  {
+    "id": 5,
+    "pacienteId": 2,
+    "dia": "2025-10-15",
+    "hora": "17:38",
+    "motivo": "Dolor muela",
+    "medicoAsignado": 2
   }
 ]

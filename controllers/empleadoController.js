@@ -1,54 +1,75 @@
 const EmpleadoModel = require("../models/empleadoModel.js");
 
-const getEmpleados = (req, res) => {
-    res.json(EmpleadoModel.getAll());
-}
-
-const addEmpleado = (req, res) => {
-    const { id, nombre, dni, rol, area } = req.body;
-    const nuevoEmpleado = EmpleadoModel.add(id, nombre, dni, rol, area);
-    res.status(201).json({
-        mensaje: "Empleado agregado",
-        empleado: nuevoEmpleado
-    });
-}
-
-const updateEmpleado = (req, res) => {
-    const { id } = req.params;
-    const { nombre, dni, rol, area } = req.body;
-    const actualizado = EmpleadoModel.update(id, nombre, dni, rol, area);
-    if (!actualizado) {
-        return res.status(404).json({ mensaje: "Empleado no encontrado" });
+const getEmpleados = async (req, res) => {
+    try {
+        const empleados = await EmpleadoModel.getAll();
+        res.json(empleados);
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al obtener empleados", error: err.message });
     }
-    res.json({
-        mensaje: "Empleado actualizado (PUT)",
-        empleado: actualizado
-    });
 }
 
-const patchEmpleado = (req, res) => {
-    const { id } = req.params;
-    const campos = req.body;
-    const actualizado = EmpleadoModel.patch(id, campos);
-    if (!actualizado) {
-        return res.status(404).json({ mensaje: "Empleado no encontrado" });
+const addEmpleado = async (req, res) => {
+    try {
+        const { id, nombre, dni, rol, area } = req.body;
+        const nuevoEmpleado = await EmpleadoModel.add(id, nombre, dni, rol, area);
+        res.status(201).json({
+            mensaje: "Empleado agregado",
+            empleado: nuevoEmpleado
+        });
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al agregar empleado", error: err.message });
     }
-    res.json({
-        mensaje: "Empleado actualizado (PATCH)",
-        empleado: actualizado
-    });
 }
 
-const deleteEmpleado = (req, res) => {
-    const id = parseInt(req.params.id);
-    const eliminado = EmpleadoModel.remove(id);
-    if (!eliminado) {
-        return res.status(404).json({ mensaje: "Empleado no encontrado" });
+const updateEmpleado = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre, dni, rol, area } = req.body;
+        const actualizado = await EmpleadoModel.update(id, nombre, dni, rol, area);
+        if (!actualizado) {
+            return res.status(404).json({ mensaje: "Empleado no encontrado" });
+        }
+        res.json({
+            mensaje: "Empleado actualizado (PUT)",
+            empleado: actualizado
+        });
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al actualizar empleado", error: err.message });
     }
-    return res.status(200).json({
-        mensaje: "Empleado eliminado correctamente",
-        empleado: eliminado
-    });
+}
+
+const patchEmpleado = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const campos = req.body;
+        const actualizado = await EmpleadoModel.patch(id, campos);
+        if (!actualizado) {
+            return res.status(404).json({ mensaje: "Empleado no encontrado" });
+        }
+        res.json({
+            mensaje: "Empleado actualizado (PATCH)",
+            empleado: actualizado
+        });
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al actualizar empleado", error: err.message });
+    }
+}
+
+const deleteEmpleado = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const eliminado = await EmpleadoModel.remove(id);
+        if (!eliminado) {
+            return res.status(404).json({ mensaje: "Empleado no encontrado" });
+        }
+        return res.status(200).json({
+            mensaje: "Empleado eliminado correctamente",
+            empleado: eliminado
+        });
+    } catch (err) {
+        res.status(500).json({ mensaje: "Error al eliminar empleado", error: err.message });
+    }
 }
 
 module.exports = { getEmpleados, addEmpleado, updateEmpleado, patchEmpleado, deleteEmpleado };

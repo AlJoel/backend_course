@@ -16,9 +16,10 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
+
 app.use("/", webRoutes);
-app.use("/turnos", turnoRoutes);
-app.use("/empleados", empleadoRoutes);
+app.use('/empleados', empleadoRoutes);
+app.use('/turnos', turnoRoutes);
 app.use('/tareas', tareaRoutes);
 
 // Servidor en escucha

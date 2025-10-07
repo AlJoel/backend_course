@@ -101,5 +101,18 @@
     "observaciones": "Diabetes",
     "area": "Administración de Turnos",
     "id": 8
+  },
+  {
+    "tipo": "Alta de turno",
+    "estado": "pendiente",
+    "fechaInicio": "2025-10-07T17:34:58.372Z",
+    "fechaFin": null,
+    "prioridad": "media",
+    "idEmpleadoResponsable": "1",
+    "idTurno": 5,
+    "idPaciente": "2",
+    "observaciones": "Dolor muela",
+    "area": "Administración de Turnos",
+    "id": 9
   }
 ]

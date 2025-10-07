@@ -1,6 +1,6 @@
 const express = require('express');
-const EmpleadoModel = require('../models/EmpleadoModel');
-const TurnoModel = require('../models/TurnoModel');
+const EmpleadoModel = require('../models/empleadoModel');
+const TurnoModel = require('../models/turnoModel');
 
 const router = express.Router();
 
@@ -9,14 +9,22 @@ router.get('/', (req, res) => {
 });
 
 //Listados
-router.get('/empleados', (req, res) => {
-    const empleados = EmpleadoModel.getAll();
-    res.render("empleados/lista", {titulo: "Empleados", empleados});
+router.get('/empleados', async (req, res) => {
+    try {
+        const empleados = await EmpleadoModel.getAll();
+        res.render("empleados/lista", {titulo: "Empleados", empleados});
+    } catch (err) {
+        res.status(500).send('Error al cargar empleados');
+    }
 });
 
-router.get("/turnos", (req, res) => {
-   const turnos = TurnoModel.getAll();
-   res.render("turnos/lista", {titulo: "Turnos", turnos});
+router.get("/turnos", async (req, res) => {
+   try {
+       const turnos = await TurnoModel.getAll();
+       res.render("turnos/lista", {titulo: "Turnos", turnos});
+   } catch (err) {
+       res.status(500).send('Error al cargar turnos');
+   }
 });
 
 //Formularios
