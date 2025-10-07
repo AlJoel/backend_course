@@ -1,5 +1,5 @@
-const TurnoModel = require("../models/turnoModel.js");
-const TareaModel = require("../models/tareaModel.js");
+import TurnoModel from '../models/turnoModel.js';
+import TareaModel from '../models/tareaModel.js';
 
 const getTurnos = async (req, res) => {
     try {
@@ -137,4 +137,4 @@ const deleteTurno = async (req, res) => {
     }
 }
 
-module.exports = { getTurnos, addTurno, updateTurno, patchTurno, deleteTurno };
+export { getTurnos, addTurno, updateTurno, patchTurno, deleteTurno };

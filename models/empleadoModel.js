@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+import { promises as fs } from 'fs';
 const EMPLEADOS_PATH = './db/empleados.json';
 
 class EmpleadoModel {
@@ -66,4 +66,4 @@ class EmpleadoModel {
     }
 }
 
-module.exports = new EmpleadoModel();
+export default new EmpleadoModel();

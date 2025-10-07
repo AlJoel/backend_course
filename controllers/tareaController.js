@@ -1,4 +1,4 @@
-const TareaModel = require("../models/tareaModel.js");
+import TareaModel from '../models/tareaModel.js';
 
 const getTareas = async (req, res) => {
     try {
@@ -38,4 +38,4 @@ const buscar = async (req, res) => {
     }
 };
 
-module.exports = { getTareas, buscar };
+export { getTareas, buscar };

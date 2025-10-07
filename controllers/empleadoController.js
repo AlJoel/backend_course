@@ -1,4 +1,4 @@
-const EmpleadoModel = require("../models/empleadoModel.js");
+import EmpleadoModel from '../models/empleadoModel.js';
 
 const getEmpleados = async (req, res) => {
     try {
@@ -72,4 +72,4 @@ const deleteEmpleado = async (req, res) => {
     }
 }
 
-module.exports = { getEmpleados, addEmpleado, updateEmpleado, patchEmpleado, deleteEmpleado };
+export { getEmpleados, addEmpleado, updateEmpleado, patchEmpleado, deleteEmpleado };

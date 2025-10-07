@@ -1,6 +1,6 @@
-const express = require('express');
-const EmpleadoModel = require('../models/empleadoModel');
-const TurnoModel = require('../models/turnoModel');
+import express from 'express';
+import EmpleadoModel from '../models/empleadoModel.js';
+import TurnoModel from '../models/turnoModel.js';
 
 const router = express.Router();
 
@@ -36,4 +36,4 @@ router.get("/turnos/nuevo", (req, res) => {
     res.render("turnos/nuevo", {titulo:"Nuevo turno"});
 });
 
-module.exports = router;
+export default router;

@@ -1,18 +1,12 @@
-const express = require("express");
-const {
-    getEmpleados,
-    addEmpleado,
-    updateEmpleado,
-    patchEmpleado,
-    deleteEmpleado
-} = require("../controllers/empleadoController");
+import express from 'express';
+import { getEmpleados, addEmpleado, updateEmpleado, patchEmpleado, deleteEmpleado } from '../controllers/empleadoController.js';
 
 const router = express.Router();
 
-router.get("/", getEmpleados);
-router.post("/agregar", addEmpleado);
-router.put("/:id", updateEmpleado);
-router.patch("/:id", patchEmpleado);
-router.delete("/:id", deleteEmpleado);
+router.get('/', getEmpleados);
+router.post('/agregar', addEmpleado);
+router.put('/:id', updateEmpleado);
+router.patch('/:id', patchEmpleado);
+router.delete('/:id', deleteEmpleado);
 
-module.exports = router;
+export default router;

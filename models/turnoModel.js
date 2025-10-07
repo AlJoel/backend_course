@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+import { promises as fs } from 'fs';
 const TURNOS_PATH = './db/turnos.json';
 
 class TurnoModel {
@@ -68,4 +68,4 @@ class TurnoModel {
     }
 }
 
-module.exports = new TurnoModel();
+export default new TurnoModel();

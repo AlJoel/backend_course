@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+import { promises as fs } from 'fs';
 
 const TAREAS_PATH = './db/tareas.json';
 
@@ -44,4 +44,4 @@ class TareaModel {
     }
 }
 
-module.exports = new TareaModel();
+export default new TareaModel();
