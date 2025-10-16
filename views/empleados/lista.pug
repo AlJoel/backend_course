@@ -10,11 +10,40 @@ block content
           th Nombre
           th DNI
           th Rol
+          th Acciones
       tbody
         each e in empleados
           tr
             td= e.nombre
             td= e.dni
             td= e.rol
+            td
+              button(type="button" data-action="delete" data-id=e._id onclick="return confirmarEliminar(this)") Eliminar
   else
     p No hay empleados cargados.
+
+  script.
+    async function confirmarEliminar(btn){
+      if(!confirm('¿Eliminar este empleado?')) return false;
+      const id = btn.dataset.id;
+      try {
+        const res = await fetch(`/empleados/${id}`, {
+          method: 'DELETE',
+          headers: { 'Accept': 'application/json' }
+        });
+        if(!res.ok){
+          let msg = 'Error al eliminar';
+          try { const data = await res.json(); 
+          if (data?.mensaje) msg = data.mensaje; } 
+          catch {}
+          alert(msg);
+          return false;
+        }
+        const row = btn.closest('tr');
+        if (row) row.remove(); else location.reload();
+        return true;
+      } catch (err){
+        alert('Error de red: ' + err.message);
+        return false;
+      }
+    }

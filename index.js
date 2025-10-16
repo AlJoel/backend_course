@@ -7,6 +7,7 @@ import empleadoRoutes from './routes/empleadoRoutes.js';
 import tareaRoutes from './routes/tareaRoutes.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import methodOverride from 'method-override';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
