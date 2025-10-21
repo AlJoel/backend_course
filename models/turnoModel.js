@@ -22,25 +22,31 @@ async function add(pacienteId, dia, hora, motivo, medicoAsignado) {
 }
 
 async function update(id, pacienteId, dia, hora, motivo, medicoAsignado) {
-    const pacienteNum = pacienteId !== undefined && pacienteId !== null && pacienteId !== '' ? parseInt(pacienteId) : null;
-    const updated = mongoose.Types.ObjectId.isValid(id)
-        ? await Turno.findByIdAndUpdate(id, { pacienteId: pacienteNum, dia, hora, motivo, medicoAsignado }, { new: true }).lean()
-        : null;
-    if (!updated) return null;
-    updated.id = updated._id;
-    return updated;
+    const turno = await Turno.findById(id);
+    if (!turno) return null;
+    
+    turno.pacienteId = pacienteId;
+    turno.dia = dia;
+    turno.hora = hora;
+    turno.motivo = motivo;
+    turno.medicoAsignado = medicoAsignado;
+
+    const guardado = await turno.save();
+    return guardado;
 }
 
 async function patch(id, campos) {
-    if (campos.pacienteId !== undefined) campos.pacienteId = campos.pacienteId === '' ? null : parseInt(campos.pacienteId);
-    // no parsear medicoAsignado a number; permitir string/ObjectId/null
-    if (campos.medicoAsignado !== undefined) campos.medicoAsignado = campos.medicoAsignado === '' ? null : campos.medicoAsignado;
-    const updated = mongoose.Types.ObjectId.isValid(id)
-        ? await Turno.findByIdAndUpdate(id, campos, { new: true }).lean()
-        : null;
-    if (!updated) return null;
-    updated.id = updated._id;
-    return updated;
+    const turno = await Turno.findById(id);
+    if (!turno) return null;
+
+    if (campos.pacienteId !== undefined) turno.pacienteId = campos.pacienteId;
+    if (campos.dia !== undefined) turno.dia = campos.dia;
+    if (campos.hora !== undefined) turno.hora = campos.hora;
+    if (campos.motivo !== undefined) turno.motivo = campos.motivo;
+    if (campos.medicoAsignado !== undefined) turno.medicoAsignado = campos.medicoAsignado;
+
+    const guardado = await turno.save();
+    return guardado;
 }
 
 async function remove(id) {

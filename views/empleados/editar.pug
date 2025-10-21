@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  h1 Editar empleado
+  if empleado
+    form#formEditarEmpleado(method="post" action=`/empleados/${empleado._id}?_method=PUT`)
+      div
+        label(for="nombre") Nombre:
+        input(type="text" name="nombre" id="nombre" required value=empleado.nombre)
+      div
+        label(for="dni") DNI:
+        input(type="text" name="dni" id="dni" required value=empleado.dni)
+      div
+        label(for="rol") Rol:
+        select(name="rol" id="rol" required)
+          option(value="Administrativo" selected=empleado.rol==='Administrativo') Administrativo
+          option(value="Médico" selected=empleado.rol==='Médico') Médico
+      button(type="submit") Guardar cambios
+      a(href="/empleados") Cancelar
+  else
+    p Empleado no encontrado.

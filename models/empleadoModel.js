@@ -18,30 +18,42 @@ async function add(nombre, dni, rol) {
     return await nuevoEmpleado.save();
 }
 
-async function update(id, nombre, dni, rol, area) {
-    const updated = await Empleado.findByIdAndUpdate(
-        id,
-        { nombre, dni, rol, area },
-        { new: true }
-    ).lean();
-    if (!updated) return null;
-    updated.id = updated._id;
-    return updated;
+async function update(id, nombre, dni, rol) {
+    const emp = await Empleado.findById(id);
+    if (!emp) return null;
+
+    emp.nombre = nombre;
+    emp.dni = dni;
+    emp.rol = rol;
+    
+    const guardado = await emp.save();
+    return guardado;
 }
 
 async function patch(id, campos) {
-    const updated = await Empleado.findByIdAndUpdate(id, campos, { new: true }).lean();
-    if (!updated) return null;
-    updated.id = updated._id;
-    return updated;
+    const emp = await Empleado.findById(id);
+    if (!emp) return null;
+
+    if (campos.nombre !== undefined) emp.nombre = campos.nombre;
+    if (campos.dni !== undefined) emp.dni = campos.dni;
+    if (campos.rol !== undefined) emp.rol = campos.rol;
+
+    const guardado = await emp.save();
+    return guardado;
 }
 
 async function remove(id) {
     return await Empleado.findByIdAndDelete(id);
 }
 
+
+async function getById(id) {
+    return await Empleado.findById(id).lean();
+}
+
 const EmpleadoModel = {
     getAll,
+    getById,
     add,
     update,
     patch,

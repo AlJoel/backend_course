@@ -12,6 +12,7 @@ block content
           th Hora
           th Motivo
           th Médico
+          th Acciones
       tbody
         each t in turnos
           tr
@@ -25,5 +26,32 @@ block content
               td= t.medicoAsignado
             else
               td Sin médico
+            td
+              button(type="button" data-action="delete" data-id=t._id onclick="return confirmarEliminarTurno(this)") Eliminar
   else
-    p No hay turnos cargados.
+    p No hay turnos cargados. 
+
+  script.
+    async function confirmarEliminarTurno(btn){
+      if(!confirm('¿Eliminar este turno?')) return false;
+      const id = btn.dataset.id;
+      try {
+        const res = await fetch(`/turnos/${id}`, {
+          method: 'DELETE',
+          headers: { 'Accept': 'application/json' }
+        });
+        if(!res.ok){
+          let msg = 'Error al eliminar';
+          try { const data = await res.json(); if (data?.mensaje) msg = data.mensaje; } catch {}
+          alert(msg);
+          return false;
+        }
+        const row = btn.closest('tr');
+        if (row) row.remove(); else location.reload();
+        return true;
+      } catch (err){
+        alert('Error de red: ' + err.message);
+        return false;
+      }
+    }
+

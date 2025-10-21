@@ -18,6 +18,9 @@ block content
             td= e.dni
             td= e.rol
             td
+              form(method="get" action=`/empleados/${e._id}/editar` style="display:inline")
+                button(type="submit" class="btn-editar") Editar
+              |  
               button(type="button" data-action="delete" data-id=e._id onclick="return confirmarEliminar(this)") Eliminar
   else
     p No hay empleados cargados.

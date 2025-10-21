@@ -25,8 +25,8 @@ const addEmpleado = async (req, res) => {
 const updateEmpleado = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nombre, dni, rol, area } = req.body;
-        const actualizado = await EmpleadoModel.update(id, nombre, dni, rol, area);
+        const { nombre, dni, rol } = req.body;
+        const actualizado = await EmpleadoModel.update(id, nombre, dni, rol);
         if (!actualizado) {
             return res.status(404).json({ mensaje: "Empleado no encontrado" });
         }
