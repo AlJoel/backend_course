@@ -27,6 +27,9 @@ block content
             else
               td Sin médico
             td
+              form(method="get" action=`/turnos/${t._id}/editar` style="display:inline")
+                button(type="submit" class="btn-editar") Editar
+              |  
               button(type="button" data-action="delete" data-id=t._id onclick="return confirmarEliminarTurno(this)") Eliminar
   else
     p No hay turnos cargados. 

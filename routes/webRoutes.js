@@ -1,4 +1,5 @@
-// Procesar edición de empleado (formulario)
+
+
 import methodOverride from 'method-override';
 import express from 'express';
 import EmpleadoModel from '../models/empleadoModel.js';
@@ -18,6 +19,16 @@ router.put('/empleados/:id', async (req, res) => {
         res.redirect('/empleados');
     } catch (err) {
         res.status(500).send('Error al actualizar empleado');
+    }
+});
+
+router.put('/turnos/:id', async (req, res) => {
+    try {
+        const { pacienteId, dia, hora, motivo, medicoAsignado } = req.body;
+        await TurnoModel.update(req.params.id, pacienteId, dia, hora, motivo, medicoAsignado);
+        res.redirect('/turnos');
+    } catch (err) {
+        res.status(500).send('Error al actualizar turno');
     }
 });
 
@@ -65,6 +76,20 @@ router.get('/empleados/:id/editar', async (req, res) => {
         res.render('empleados/editar', { titulo: 'Editar empleado', empleado });
     } catch (err) {
         res.status(500).send('Error al cargar empleado');
+    }
+});
+
+// Editar turno
+router.get('/turnos/:id/editar', async (req, res) => {
+    try {
+        const turno = await TurnoModel.getAll().then(arr => arr.find(t => t._id.toString() === req.params.id));
+        const empleados = await EmpleadoModel.getAll();
+        const medicos = empleados
+            .filter(e => e.rol === 'Médico')
+            .map(e => ({ id: e._id, nombre: e.nombre }));
+        res.render('turnos/editar', { titulo: 'Editar turno', turno, medicos });
+    } catch (err) {
+        res.status(500).send('Error al cargar turno');
     }
 });
 
