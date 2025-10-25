@@ -13,7 +13,9 @@ const Turno = mongoose.model('Turno', turnoSchema);
 
 
 async function getAll() {
-    return await Turno.find().lean();
+    return await Turno.find()
+        .populate('medicoAsignado', 'nombre')
+        .lean();
 }
 
 async function add(pacienteId, dia, hora, motivo, medicoAsignado) {
