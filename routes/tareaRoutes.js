@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { buscar} = require('../controllers/tareaController');
+import { buscar } from '../controllers/tareaController.js';
 
 router.get('/buscar', buscar);
 
-module.exports = router;
+export default router;

@@ -1,71 +1,64 @@
-const fs = require('fs');
-const TURNOS_PATH = './db/turnos.json';
+import mongoose from 'mongoose';
 
-class TurnoModel {
-    constructor() {}
+const turnoSchema = new mongoose.Schema(
+    {
+        pacienteId: { type: Number, default: null },
+        dia: { type: String },
+        hora: { type: String },
+        motivo: { type: String },
+        medicoAsignado: { type: mongoose.Schema.Types.ObjectId, ref: 'Empleado', default: null }
+    });
 
-    _readFile() {
-        const data = fs.readFileSync(TURNOS_PATH, 'utf-8');
-        return JSON.parse(data);
-    }
+const Turno = mongoose.model('Turno', turnoSchema);
 
-    _writeFile(data) {
-        fs.writeFileSync(TURNOS_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    }
 
-    getAll() {
-        return this._readFile();
-    }
-
-    add(id, pacienteId, dia, hora, motivo, medicoAsignado) {
-        const turnos = this._readFile();
-        const nuevoTurno = {
-            id: parseInt(id),
-            pacienteId: pacienteId !== undefined ? parseInt(pacienteId) : null,
-            dia,
-            hora,
-            motivo,
-            medicoAsignado: medicoAsignado !== undefined ? parseInt(medicoAsignado) : null
-        };
-        turnos.push(nuevoTurno);
-        this._writeFile(turnos);
-        return nuevoTurno;
-    }
-
-    update(id, pacienteId, dia, hora, motivo, medicoAsignado) {
-        const turnos = this._readFile();
-        const index = turnos.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        turnos[index] = {
-            id: parseInt(id),
-            pacienteId: pacienteId !== undefined ? parseInt(pacienteId) : null,
-            dia,
-            hora,
-            motivo,
-            medicoAsignado: medicoAsignado !== undefined ? parseInt(medicoAsignado) : null
-        };
-        this._writeFile(turnos);
-        return turnos[index];
-    }
-
-    patch(id, campos) {
-        const turnos = this._readFile();
-        const index = turnos.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        turnos[index] = { ...turnos[index], ...campos };
-        this._writeFile(turnos);
-        return turnos[index];
-    }
-
-    remove(id) {
-        const turnos = this._readFile();
-        const index = turnos.findIndex(t => t.id === parseInt(id));
-        if (index === -1) return null;
-        const eliminado = turnos[index];
-        turnos.splice(index, 1);
-        this._writeFile(turnos);
-        return eliminado;
-    }
+async function getAll() {
+    return await Turno.find().lean();
 }
 
-module.exports = new TurnoModel();
+async function add(pacienteId, dia, hora, motivo, medicoAsignado) {
+    const nuevoTurno = new Turno({ pacienteId, dia, hora, motivo, medicoAsignado });
+    return await nuevoTurno.save();
+}
+
+async function update(id, pacienteId, dia, hora, motivo, medicoAsignado) {
+    const turno = await Turno.findById(id);
+    if (!turno) return null;
+    
+    turno.pacienteId = pacienteId;
+    turno.dia = dia;
+    turno.hora = hora;
+    turno.motivo = motivo;
+    turno.medicoAsignado = medicoAsignado;
+
+    const guardado = await turno.save();
+    return guardado;
+}
+
+async function patch(id, campos) {
+    const turno = await Turno.findById(id);
+    if (!turno) return null;
+
+    if (campos.pacienteId !== undefined) turno.pacienteId = campos.pacienteId;
+    if (campos.dia !== undefined) turno.dia = campos.dia;
+    if (campos.hora !== undefined) turno.hora = campos.hora;
+    if (campos.motivo !== undefined) turno.motivo = campos.motivo;
+    if (campos.medicoAsignado !== undefined) turno.medicoAsignado = campos.medicoAsignado;
+
+    const guardado = await turno.save();
+    return guardado;
+}
+
+async function remove(id) {
+    return await Turno.findByIdAndDelete(id);
+}
+
+const TurnoModel = {
+    getAll,
+    add,
+    update,
+    patch,
+    remove
+};
+
+export default TurnoModel;

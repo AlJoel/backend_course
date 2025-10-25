@@ -4,9 +4,6 @@ block content
   h1= titulo
 
   form(action="/empleados/agregar" method="post")
-    label(for="id") ID
-    input#id(type="number" name="id" required)
-    br
 
     label(for="nombre") Nombre
     input#nombre(type="text" name="nombre" required)
@@ -17,11 +14,10 @@ block content
     br
 
     label(for="rol") Rol
-    input#rol(type="text" name="rol")
+    select#rol(name="rol")
+      option(value="Administrativo") Administrativo
+      option(value="Médico") Médico
     br
 
-    label(for="area") Área
-    input#area(type="text" name="area")
-    br
 
     button(type="submit") Guardar

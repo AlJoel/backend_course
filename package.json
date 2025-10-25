@@ -1,6 +1,10 @@
 {
+  "type": "module",
   "dependencies": {
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.19.1",
     "pug": "^3.0.3"
   },
   "name": "proyecto_crud",
@@ -8,8 +12,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }

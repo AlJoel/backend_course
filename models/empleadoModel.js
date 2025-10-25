@@ -1,69 +1,63 @@
-const fs = require('fs');
-const EMPLEADOS_PATH = './db/empleados.json';
+import mongoose from 'mongoose';
 
-class EmpleadoModel {
-    constructor() {}
+const empleadoSchema = new mongoose.Schema(
+    {
+        nombre: { type: String },
+        dni: { type: String },
+        rol: { type: String }
+    });
 
-    _readFile() {
-        const data = fs.readFileSync(EMPLEADOS_PATH, 'utf-8');
-        return JSON.parse(data);
-    }
+const Empleado = mongoose.model('Empleado', empleadoSchema);
 
-    _writeFile(data) {
-        fs.writeFileSync(EMPLEADOS_PATH, JSON.stringify(data, null, 2), 'utf-8');
-    }
-
-    getAll() {
-        return this._readFile();
-    }
-
-    add(id, nombre, dni, rol, area) {
-        const empleados = this._readFile();
-        const nuevoEmpleado = {
-            id: parseInt(id),
-            nombre,
-            dni,
-            rol,
-            area
-        };
-        empleados.push(nuevoEmpleado);
-        this._writeFile(empleados);
-        return nuevoEmpleado;
-    }
-
-    update(id, nombre, dni, rol, area) {
-        const empleados = this._readFile();
-        const index = empleados.findIndex(e => e.id === parseInt(id));
-        if (index === -1) return null;
-        empleados[index] = {
-            id: parseInt(id),
-            nombre,
-            dni,
-            rol,
-            area
-        };
-        this._writeFile(empleados);
-        return empleados[index];
-    }
-
-    patch(id, campos) {
-        const empleados = this._readFile();
-        const index = empleados.findIndex(e => e.id === parseInt(id));
-        if (index === -1) return null;
-        empleados[index] = { ...empleados[index], ...campos };
-        this._writeFile(empleados);
-        return empleados[index];
-    }
-
-    remove(id) {
-        const empleados = this._readFile();
-        const index = empleados.findIndex(e => e.id === parseInt(id));
-        if (index === -1) return null;
-        const eliminado = empleados[index];
-        empleados.splice(index, 1);
-        this._writeFile(empleados);
-        return eliminado;
-    }
+async function getAll() {
+    return await Empleado.find().lean();
 }
 
-module.exports = new EmpleadoModel();
+async function add(nombre, dni, rol) {
+    const nuevoEmpleado = new Empleado({ nombre, dni, rol });
+    return await nuevoEmpleado.save();
+}
+
+async function update(id, nombre, dni, rol) {
+    const emp = await Empleado.findById(id);
+    if (!emp) return null;
+
+    emp.nombre = nombre;
+    emp.dni = dni;
+    emp.rol = rol;
+    
+    const guardado = await emp.save();
+    return guardado;
+}
+
+async function patch(id, campos) {
+    const emp = await Empleado.findById(id);
+    if (!emp) return null;
+
+    if (campos.nombre !== undefined) emp.nombre = campos.nombre;
+    if (campos.dni !== undefined) emp.dni = campos.dni;
+    if (campos.rol !== undefined) emp.rol = campos.rol;
+
+    const guardado = await emp.save();
+    return guardado;
+}
+
+async function remove(id) {
+    return await Empleado.findByIdAndDelete(id);
+}
+
+
+async function getById(id) {
+    return await Empleado.findById(id).lean();
+}
+
+const EmpleadoModel = {
+    getAll,
+    getById,
+    add,
+    update,
+    patch,
+    remove
+};
+
+export default EmpleadoModel;
