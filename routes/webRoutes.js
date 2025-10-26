@@ -86,7 +86,7 @@ router.get('/turnos/:id/editar', async (req, res) => {
         const empleados = await EmpleadoModel.getAll();
         const medicos = empleados
             .filter(e => e.rol === 'Médico')
-            .map(e => ({ id: e._id, nombre: e.nombre }));
+            .map(e => ({ _id: e._id, nombre: e.nombre }));
         res.render('turnos/editar', { titulo: 'Editar turno', turno, medicos });
     } catch (err) {
         res.status(500).send('Error al cargar turno');
