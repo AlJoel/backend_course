@@ -5,6 +5,7 @@ import webRoutes from './routes/webRoutes.js';
 import turnoRoutes from './routes/turnoRoutes.js';
 import empleadoRoutes from './routes/empleadoRoutes.js';
 import tareaRoutes from './routes/tareaRoutes.js';
+import pacienteRoutes from './routes/pacienteRoutes.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import methodOverride from 'method-override';
@@ -34,6 +35,7 @@ app.use('/', webRoutes);
 app.use('/empleados', empleadoRoutes);
 app.use('/turnos', turnoRoutes);
 app.use('/tareas', tareaRoutes);
+app.use('/pacientes', pacienteRoutes);
 
 // Servidor en escucha
 app.listen(PORT, () => {

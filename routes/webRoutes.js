@@ -4,6 +4,7 @@ import methodOverride from 'method-override';
 import express from 'express';
 import EmpleadoModel from '../models/empleadoModel.js';
 import TurnoModel from '../models/turnoModel.js';
+import PacienteModel from '../models/pacienteModel.js';
 
 const router = express.Router();
 router.use(methodOverride('_method'));
@@ -12,33 +13,22 @@ router.get('/', (req, res) => {
     res.render("home", {titulo: "Menu principal"});
 });
 
-router.put('/empleados/:id', async (req, res) => {
-    try {
-        const { nombre, dni, rol } = req.body;
-        await EmpleadoModel.update(req.params.id, nombre, dni, rol);
-        res.redirect('/empleados');
-    } catch (err) {
-        res.status(500).send('Error al actualizar empleado');
-    }
-});
-
-router.put('/turnos/:id', async (req, res) => {
-    try {
-        const { pacienteId, dia, hora, motivo, medicoAsignado } = req.body;
-        await TurnoModel.update(req.params.id, pacienteId, dia, hora, motivo, medicoAsignado);
-        res.redirect('/turnos');
-    } catch (err) {
-        res.status(500).send('Error al actualizar turno');
-    }
-});
-
-//Listados
+// Listados
 router.get('/empleados', async (req, res) => {
     try {
         const empleados = await EmpleadoModel.getAll();
         res.render("empleados/lista", {titulo: "Empleados", empleados});
     } catch (err) {
         res.status(500).send('Error al cargar empleados');
+    }
+});
+
+router.get('/pacientes', async (req, res) => {
+    try {
+        const pacientes = await PacienteModel.getAll();
+        res.render("pacientes/lista", {titulo: "Pacientes", pacientes});
+    } catch (err) {
+        res.status(500).send('Error al cargar pacientes');
     }
 });
 
@@ -51,9 +41,13 @@ router.get("/turnos", async (req, res) => {
    }
 });
 
-//Formularios
+// Formularios
 router.get("/empleados/nuevo", (req, res) => {
    res.render("empleados/nuevo", {titulo:"Nuevo empleado"});
+});
+
+router.get("/pacientes/nuevo", (req, res) => {
+   res.render("pacientes/nuevo", {titulo:"Nuevo paciente"});
 });
 
 router.get("/turnos/nuevo", async (req, res) => {
@@ -76,6 +70,17 @@ router.get('/empleados/:id/editar', async (req, res) => {
         res.render('empleados/editar', { titulo: 'Editar empleado', empleado });
     } catch (err) {
         res.status(500).send('Error al cargar empleado');
+    }
+});
+
+// Editar paciente
+router.get('/pacientes/:id/editar', async (req, res) => {
+    try {
+        const paciente = await PacienteModel.getById(req.params.id);
+        if (!paciente) return res.status(404).send('Paciente no encontrado');
+        res.render('pacientes/editar', { titulo: 'Editar paciente', paciente });
+    } catch (err) {
+        res.status(500).send('Error al cargar paciente');
     }
 });
 

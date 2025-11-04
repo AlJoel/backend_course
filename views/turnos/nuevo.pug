@@ -2,10 +2,10 @@ extends ../layout
 
 block content
   h1= titulo
-  form(action="/turnos/agregar" method="post")
 
-    label(for="pacienteId") Paciente ID
-    input#pacienteId(type="number" name="pacienteId" required)
+  form#formNuevoTurno
+    label(for="dniPaciente") DNI del paciente
+    input#dniPaciente(type="text" name="dniPaciente" required)
     br
 
     label(for="dia") Día
@@ -38,7 +38,36 @@ block content
     select#prioridad(name="prioridad")
       option(value="baja") baja
       option(value="media" selected) media
-      option(value="alta") alta
-    br
+
 
     button(type="submit") Guardar
+
+  script.
+    document.getElementById('formNuevoTurno').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        dniPaciente: form.dniPaciente.value,
+        dia: form.dia.value,
+        hora: form.hora.value,
+        motivo: form.motivo.value,
+        medicoAsignado: form.medicoAsignado.value,
+        idEmpleadoResponsable: form.idEmpleadoResponsable.value,
+        prioridad: form.prioridad.value
+      };
+      try {
+        const res = await fetch('/turnos/agregar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+          window.location.href = '/turnos';
+        } else {
+          alert(result.mensaje || 'Error al agregar turno');
+        }
+      } catch (err) {
+        alert('Error de red: ' + err.message);
+      }
+    });

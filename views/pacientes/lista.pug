@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+  h1= titulo
+  a(href="/pacientes/nuevo") + Nuevo paciente
+  if pacientes && pacientes.length
+    table
+      thead
+        tr
+          th Nombre
+          th DNI
+          th Teléfono
+          th Obra social
+          th Acciones
+      tbody
+        each p in pacientes
+          tr
+            td= p.nombre
+            td= p.dni
+            td= p.telefono
+            td= p.obraSocial
+            td
+              form(method="get" action=`/pacientes/${p._id}/editar` style="display:inline")
+                button(type="submit" class="btn-editar") Editar
+              |
+              button(type="button" data-action="delete" data-id=p._id onclick="return confirmarEliminar(this)") Eliminar
+  else
+    p No hay pacientes cargados.
+
+  script.
+    async function confirmarEliminar(btn){
+      if(!confirm('¿Eliminar este paciente?')) return false;
+      const id = btn.dataset.id;
+      try {
+        const res = await fetch(`/pacientes/${id}`, {
+          method: 'DELETE',
+          headers: { 'Accept': 'application/json' }
+        });
+        if(!res.ok){
+          let msg = 'Error al eliminar';
+          try { const data = await res.json(); 
+          if (data?.mensaje) msg = data.mensaje; } 
+          catch {}
+          alert(msg);
+          return false;
+        }
+        const row = btn.closest('tr');
+        if (row) row.remove(); else location.reload();
+        return true;
+      } catch (err){
+        alert('Error de red: ' + err.message);
+        return false;
+      }
+    }

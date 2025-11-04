@@ -1,5 +1,6 @@
 import TurnoModel from '../models/turnoModel.js';
 import TareaModel from '../models/tareaModel.js';
+import PacienteModel from '../models/pacienteModel.js';
 
 const getTurnos = async (req, res) => {
     try {
@@ -12,8 +13,18 @@ const getTurnos = async (req, res) => {
 
 const addTurno = async (req, res) => {
     try {
-    const { pacienteId, dia, hora, motivo, medicoAsignado, idEmpleadoResponsable, prioridad } = req.body;
-    const nuevoTurno = await TurnoModel.add(pacienteId, dia, hora, motivo, medicoAsignado);
+        const { dniPaciente, dia, hora, motivo, medicoAsignado, idEmpleadoResponsable, prioridad } = req.body;
+        console.log('Datos recibidos para nuevo turno:', req.body);
+        
+        const paciente = await PacienteModel.getAll().then(arr => arr.find(p => p.dni === dniPaciente));
+        console.log('Paciente encontrado:', paciente);
+        if (!paciente) {
+            console.error('Paciente no encontrado para DNI:', dniPaciente);
+            return res.status(404).json({ mensaje: "Paciente no encontrado. Verifique el DNI." });
+        }
+        const pacienteId = paciente._id;
+        const nuevoTurno = await TurnoModel.add(pacienteId, dia, hora, motivo, medicoAsignado);
+        console.log('Turno creado:', nuevoTurno);
 
         // Crear tarea asociada alta de turno
         const nuevaTarea = {
@@ -35,6 +46,7 @@ const addTurno = async (req, res) => {
             turno: nuevoTurno
         });
     } catch (err) {
+        console.error('Error al agregar turno:', err);
         res.status(500).json({ mensaje: "Error al agregar turno", error: err.message });
     }
 }

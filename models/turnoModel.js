@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const turnoSchema = new mongoose.Schema(
     {
-        pacienteId: { type: Number, default: null },
+    pacienteId: { type: mongoose.Schema.Types.ObjectId, ref: 'Paciente', default: null },
         dia: { type: String },
         hora: { type: String },
         motivo: { type: String },

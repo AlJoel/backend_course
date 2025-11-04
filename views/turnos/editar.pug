@@ -3,7 +3,7 @@ extends ../layout
 block content
     h1 Editar turno
     if turno
-        form#formEditarTurno(method="post" action=`/turnos/${turno._id}?_method=PUT`)
+        form#formEditarTurno(data-id=turno._id)
             div
                 label(for="pacienteId") Paciente ID:
                 input(type="text" name="pacienteId" id="pacienteId" required value=turno.pacienteId)
@@ -36,5 +36,34 @@ block content
                         )
             button(type="submit") Guardar cambios
             a(href="/turnos") Cancelar
+
+        script.
+            document.getElementById('formEditarTurno').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const form = e.target;
+                const turnoId = form.getAttribute('data-id');
+                const data = {
+                    pacienteId: form.pacienteId.value,
+                    dia: form.dia.value,
+                    hora: form.hora.value,
+                    motivo: form.motivo.value,
+                    medicoAsignado: form.medicoAsignado.value
+                };
+                try {
+                    const res = await fetch(`/turnos/${turnoId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await res.json();
+                    if (res.ok) {
+                        window.location.href = '/turnos';
+                    } else {
+                        alert(result.mensaje || 'Error al actualizar turno');
+                    }
+                } catch (err) {
+                    alert('Error de red: ' + err.message);
+                }
+            });
     else
         p Turno no encontrado.

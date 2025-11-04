@@ -1,0 +1,50 @@
+extends ../layout
+
+block content
+  h1 Editar paciente
+  if paciente
+    form#formEditarPaciente(data-id=paciente._id)
+      div
+        label(for="nombre") Nombre:
+        input(type="text" name="nombre" id="nombre" required value=paciente.nombre)
+      div
+        label(for="dni") DNI:
+        input(type="text" name="dni" id="dni" required value=paciente.dni)
+      div
+        label(for="telefono") Teléfono:
+        input(type="text" name="telefono" id="telefono" required value=paciente.telefono)
+      div
+        label(for="obraSocial") Obra social:
+        input(type="text" name="obraSocial" id="obraSocial" required value=paciente.obraSocial)
+      button(type="submit") Guardar cambios
+      a(href="/pacientes") Cancelar
+
+    script.
+      document.getElementById('formEditarPaciente').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const pacienteId = form.getAttribute('data-id');
+        const data = {
+          nombre: form.nombre.value,
+          dni: form.dni.value,
+          telefono: form.telefono.value,
+          obraSocial: form.obraSocial.value
+        };
+        try {
+          const res = await fetch(`/pacientes/${pacienteId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const result = await res.json();
+          if (res.ok) {
+            window.location.href = '/pacientes';
+          } else {
+            alert(result.mensaje || 'Error al actualizar paciente');
+          }
+        } catch (err) {
+          alert('Error de red: ' + err.message);
+        }
+      });
+  else
+    p Paciente no encontrado.
