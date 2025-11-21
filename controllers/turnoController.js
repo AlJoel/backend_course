@@ -13,7 +13,7 @@ const getTurnos = async (req, res) => {
 
 const addTurno = async (req, res) => {
     try {
-        const { dniPaciente, dia, hora, motivo, medicoAsignado, idEmpleadoResponsable, prioridad } = req.body;
+        const { dniPaciente, dia, hora, motivo, medicoAsignado, prioridad } = req.body;
         console.log('Datos recibidos para nuevo turno:', req.body);
         
         const paciente = await PacienteModel.getAll().then(arr => arr.find(p => p.dni === dniPaciente));
@@ -33,7 +33,7 @@ const addTurno = async (req, res) => {
             fechaInicio: new Date().toISOString(),
             fechaFin: null,
             prioridad: prioridad || "media",
-            idEmpleadoResponsable: idEmpleadoResponsable || null,
+            idEmpleadoResponsable: req.user?._id || null,
             idTurno: nuevoTurno.id,
             idPaciente: pacienteId,
             observaciones: motivo,

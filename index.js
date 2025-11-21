@@ -2,15 +2,18 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import webRoutes from './routes/webRoutes.js';
+import loginRouter from './controllers/login.js';
 import turnoRoutes from './routes/turnoRoutes.js';
 import empleadoRoutes from './routes/empleadoRoutes.js';
 import tareaRoutes from './routes/tareaRoutes.js';
 import pacienteRoutes from './routes/pacienteRoutes.js';
 import dotenv from 'dotenv';
+dotenv.config();
+
 import mongoose from 'mongoose';
 import methodOverride from 'method-override';
-
-dotenv.config();
+import passport from './middleware/passport.js';
+import cookieParser from 'cookie-parser';
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('Conectado a MongoDB'))
@@ -30,7 +33,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(passport.initialize());
 
+app.use('/login', loginRouter);
 app.use('/', webRoutes);
 app.use('/empleados', empleadoRoutes);
 app.use('/turnos', turnoRoutes);

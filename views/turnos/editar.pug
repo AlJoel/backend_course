@@ -50,11 +50,14 @@ block content
                     medicoAsignado: form.medicoAsignado.value
                 };
                 try {
-                    const res = await fetch(`/turnos/${turnoId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
+                                        const res = await fetch(`/turnos/${turnoId}`, {
+                                            method: 'PUT',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Accept': 'application/json'
+                                            },
+                                            body: JSON.stringify(data)
+                                        });
                     const result = await res.json();
                     if (res.ok) {
                         window.location.href = '/turnos';

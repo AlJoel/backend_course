@@ -33,7 +33,10 @@ block content
         try {
           const res = await fetch(`/pacientes/${pacienteId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
             body: JSON.stringify(data)
           });
           const result = await res.json();

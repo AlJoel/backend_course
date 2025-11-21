@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  h1 Iniciar sesión
+  form#loginForm
+    label(for="username") Usuario
+    input#username(type="text" name="username" required)
+    br
+    label(for="password") Contraseña
+    input#password(type="password" name="password" required)
+    br
+    button(type="submit") Ingresar
+    
+  script.
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        username: form.username.value,
+        password: form.password.value
+      };
+      try {
+        const res = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+          window.location.href = '/';
+        } else {
+          alert(result.error || 'Error al iniciar sesión');
+        }
+      } catch (err) {
+        alert('Error de red: ' + err.message);
+      }
+    });

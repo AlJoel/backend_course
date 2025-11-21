@@ -34,7 +34,9 @@ block content
       try {
         const res = await fetch(`/pacientes/${id}`, {
           method: 'DELETE',
-          headers: { 'Accept': 'application/json' }
+          headers: {
+            'Accept': 'application/json'
+          }
         });
         if(!res.ok){
           let msg = 'Error al eliminar';

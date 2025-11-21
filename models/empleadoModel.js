@@ -2,9 +2,11 @@ import mongoose from 'mongoose';
 
 const empleadoSchema = new mongoose.Schema(
     {
+        username: { type: String, required: true, unique: true },
         nombre: { type: String },
         dni: { type: String },
-        rol: { type: String }
+        rol: { type: String },
+        passwordHash: { type: String }
     });
 
 const Empleado = mongoose.model('Empleado', empleadoSchema);
@@ -13,8 +15,12 @@ async function getAll() {
     return await Empleado.find().lean();
 }
 
-async function add(nombre, dni, rol) {
-    const nuevoEmpleado = new Empleado({ nombre, dni, rol });
+async function getByUsername(username) {
+    return await Empleado.findOne({ username }).lean();
+}
+
+async function add(username, nombre, dni, rol, passwordHash) {
+    const nuevoEmpleado = new Empleado({ username, nombre, dni, rol, passwordHash });
     return await nuevoEmpleado.save();
 }
 
@@ -54,6 +60,7 @@ async function getById(id) {
 const EmpleadoModel = {
     getAll,
     getById,
+    getByUsername,
     add,
     update,
     patch,

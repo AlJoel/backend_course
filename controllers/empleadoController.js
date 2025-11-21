@@ -1,4 +1,5 @@
 import EmpleadoModel from '../models/empleadoModel.js';
+import bcrypt from 'bcrypt';
 
 const getEmpleados = async (req, res) => {
     try {
@@ -11,8 +12,9 @@ const getEmpleados = async (req, res) => {
 
 const addEmpleado = async (req, res) => {
     try {
-    const { nombre, dni, rol, area } = req.body;
-    const nuevoEmpleado = await EmpleadoModel.add(nombre, dni, rol, area);
+    const { username, nombre, dni, rol, password } = req.body;
+    const passwordHash = await bcrypt.hash(password, 10);
+    const nuevoEmpleado = await EmpleadoModel.add(username, nombre, dni, rol, passwordHash);
         res.status(201).json({
             mensaje: "Empleado agregado",
             empleado: nuevoEmpleado

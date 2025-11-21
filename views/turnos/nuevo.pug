@@ -30,10 +30,6 @@ block content
       input#medicoAsignado(type="text" name="medicoAsignado" placeholder="ID del médico (no hay médicos cargados)")
     br
 
-    label(for="idEmpleadoResponsable") Empleado responsable (opcional)
-    input#idEmpleadoResponsable(type="number" name="idEmpleadoResponsable")
-    br
-
     label(for="prioridad") Prioridad (opcional)
     select#prioridad(name="prioridad")
       option(value="baja") baja
@@ -52,13 +48,15 @@ block content
         hora: form.hora.value,
         motivo: form.motivo.value,
         medicoAsignado: form.medicoAsignado.value,
-        idEmpleadoResponsable: form.idEmpleadoResponsable.value,
         prioridad: form.prioridad.value
       };
       try {
         const res = await fetch('/turnos/agregar', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
           body: JSON.stringify(data)
         });
         const result = await res.json();

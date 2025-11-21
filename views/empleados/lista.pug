@@ -32,7 +32,9 @@ block content
       try {
         const res = await fetch(`/empleados/${id}`, {
           method: 'DELETE',
-          headers: { 'Accept': 'application/json' }
+          headers: {
+            'Accept': 'application/json'
+          }
         });
         if(!res.ok){
           let msg = 'Error al eliminar';
