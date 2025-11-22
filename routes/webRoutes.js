@@ -83,10 +83,20 @@ router.get('/turnos',
     },
     async (req, res) => {
         try {
-                const turnos = await TurnoModel.getAll();
-                res.render("turnos/lista", {titulo: "Turnos", turnos});
+            const turnos = await TurnoModel.getAll();
+            const pacientes = await PacienteModel.getAll();
+
+            const turnosConNombre = turnos.map(t => {
+                const paciente = pacientes.find(p => String(p._id) === String(t.pacienteId));
+                return {
+                    ...t,
+                    pacienteNombre: paciente ? paciente.nombre : t.pacienteId
+                };
+            });
+
+            res.render("turnos/lista", { titulo: "Turnos", turnos: turnosConNombre });
         } catch (err) {
-                res.status(500).send('Error al cargar turnos');
+            res.status(500).send('Error al cargar turnos');
         }
     }
 );

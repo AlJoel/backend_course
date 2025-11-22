@@ -149,4 +149,31 @@ const deleteTurno = async (req, res) => {
     }
 }
 
-export { getTurnos, addTurno, updateTurno, patchTurno, deleteTurno };
+const listarTurnosVista = async (req, res) => {
+    try {
+        // Traemos turnos y pacientes en paralelo
+        const [turnos, pacientes] = await Promise.all([
+            TurnoModel.getAll(),
+            PacienteModel.getAll()
+        ]);
+
+        // Enriquecemos cada turno con el nombre del paciente
+        const turnosConNombre = turnos.map(t => {
+            const paciente = pacientes.find(p => String(p._id) === String(t.pacienteId));
+            return {
+                ...t,
+                pacienteNombre: paciente ? paciente.nombre : t.pacienteId // fallback al id
+            };
+        });
+
+        res.render('turnos/lista', {
+            titulo: 'Turnos',
+            turnos: turnosConNombre
+        });
+    } catch (err) {
+        console.error('Error al obtener turnos para la vista:', err);
+        res.status(500).send('Error al obtener turnos');
+    }
+};
+
+export { getTurnos, addTurno, updateTurno, patchTurno, deleteTurno, listarTurnosVista };
