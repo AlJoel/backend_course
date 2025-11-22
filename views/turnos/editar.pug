@@ -1,41 +1,49 @@
 extends ../layout
 
 block content
-    h1 Editar turno
+    .page-header
+        h1 Editar turno
+
     if turno
-        form#formEditarTurno(data-id=turno._id)
-            div
-                label(for="pacienteId") Paciente ID:
+        form#formEditarTurno.form-card(data-id=turno._id)
+            .form-group
+                label(for="pacienteId") Paciente ID
                 input(type="text" name="pacienteId" id="pacienteId" required value=turno.pacienteId)
-            div
-                label(for="dia") Día:
+
+            .form-group
+                label(for="dia") Día
                 input(type="text" name="dia" id="dia" required value=turno.dia)
-            div
-                label(for="hora") Hora:
+
+            .form-group
+                label(for="hora") Hora
                 input(type="text" name="hora" id="hora" required value=turno.hora)
-            div
-                label(for="motivo") Motivo:
+
+            .form-group
+                label(for="motivo") Motivo
                 input(type="text" name="motivo" id="motivo" required value=turno.motivo)
-            div
-                label(for="medicoAsignado") Médico asignado:
-                    if medicos && medicos.length
-                        select(name="medicoAsignado" id="medicoAsignado" required)
-                            option(value="") Seleccione un médico
-                            each medico in medicos
-                                option(
-                                    value=String(medico._id)
-                                    selected=(String((turno.medicoAsignado && turno.medicoAsignado._id) || turno.medicoAsignado || '') === String(medico._id))
-                                )= medico.nombre
-                    else
-                        input(
-                            type="text"
-                            name="medicoAsignado"
-                            id="medicoAsignado"
-                            required
-                            value=turno.medicoAsignado
-                        )
-            button(type="submit") Guardar cambios
-            a(href="/turnos") Cancelar
+
+            .form-group
+                label(for="medicoAsignado") Médico asignado
+                if medicos && medicos.length
+                    select(name="medicoAsignado" id="medicoAsignado" required)
+                        option(value="") Seleccione un médico
+                        each medico in medicos
+                            option(
+                                value=String(medico._id)
+                                selected=(String((turno.medicoAsignado && turno.medicoAsignado._id) || turno.medicoAsignado || '') === String(medico._id))
+                            )= medico.nombre
+                else
+                    input(
+                        type="text"
+                        name="medicoAsignado"
+                        id="medicoAsignado"
+                        required
+                        value=turno.medicoAsignado
+                    )
+
+            .form-actions
+                button(type="submit" class="btn btn-primary") Guardar cambios
+                a(href="/turnos" class="btn btn-secondary") Cancelar
 
         script.
             document.getElementById('formEditarTurno').addEventListener('submit', async function(e) {
@@ -50,14 +58,14 @@ block content
                     medicoAsignado: form.medicoAsignado.value
                 };
                 try {
-                                        const res = await fetch(`/turnos/${turnoId}`, {
-                                            method: 'PUT',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'Accept': 'application/json'
-                                            },
-                                            body: JSON.stringify(data)
-                                        });
+                    const res = await fetch(`/turnos/${turnoId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
                     const result = await res.json();
                     if (res.ok) {
                         window.location.href = '/turnos';

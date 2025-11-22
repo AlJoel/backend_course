@@ -1,62 +1,62 @@
 extends ../layout
 
 block content
-  h1= titulo
-  a(href="/turnos/nuevo") + Nuevo turno
-  if turnos && turnos.length
-    table
-      thead
-        tr
-          th Paciente
-          th Día
-          th Hora
-          th Motivo
-          th Médico
-          th Acciones
-      tbody
-        each t in turnos
-          tr
-            td= t.pacienteNombre
-            td= t.dia
-            td= t.hora
-            td= t.motivo
-            if t.medicoAsignado && t.medicoAsignado.nombre
-              td= t.medicoAsignado.nombre
-            else if t.medicoAsignado
-              td= t.medicoAsignado
-            else
-              td Sin médico
-            td
-              form(method="get" action=`/turnos/${t._id}/editar` style="display:inline")
-                button(type="submit" class="btn-editar") Editar
-              |  
-              button(type="button" data-action="delete" data-id=t._id onclick="return confirmarEliminarTurno(this)") Eliminar
-  else
-    p No hay turnos cargados. 
+    .page-header
+        h1= titulo
+        a.btn.btn-primary(href="/turnos/nuevo") + Nuevo turno
 
-  script.
-    async function confirmarEliminarTurno(btn){
-      if(!confirm('¿Eliminar este turno?')) return false;
-      const id = btn.dataset.id;
-      try {
-        const res = await fetch(`/turnos/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        if(!res.ok){
-          let msg = 'Error al eliminar';
-          try { const data = await res.json(); if (data?.mensaje) msg = data.mensaje; } catch {}
-          alert(msg);
-          return false;
+    if turnos && turnos.length
+        table
+            thead
+                tr
+                    th Paciente
+                    th Día
+                    th Hora
+                    th Motivo
+                    th Médico
+                    th Acciones
+            tbody
+                each t in turnos
+                    tr
+                        td= t.pacienteNombre
+                        td= t.dia
+                        td= t.hora
+                        td= t.motivo
+                        if t.medicoAsignado && t.medicoAsignado.nombre
+                            td= t.medicoAsignado.nombre
+                        else if t.medicoAsignado
+                            td= t.medicoAsignado
+                        else
+                            td Sin médico
+                        td
+                            form(method="get" action=`/turnos/${t._id}/editar` style="display:inline")
+                                button(type="submit" class="btn btn-secondary btn-small btn-table") Editar
+                            button(type="button" class="btn btn-danger btn-small btn-table" data-action="delete" data-id=t._id onclick="return confirmarEliminarTurno(this)") Eliminar
+    else
+        p No hay turnos cargados.
+
+    script.
+        async function confirmarEliminarTurno(btn){
+            if(!confirm('¿Eliminar este turno?')) return false;
+            const id = btn.dataset.id;
+            try {
+                const res = await fetch(`/turnos/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if(!res.ok){
+                    let msg = 'Error al eliminar';
+                    try { const data = await res.json(); if (data?.mensaje) msg = data.mensaje; } catch {}
+                    alert(msg);
+                    return false;
+                }
+                const row = btn.closest('tr');
+                if (row) row.remove(); else location.reload();
+                return true;
+            } catch (err){
+                alert('Error de red: ' + err.message);
+                return false;
+            }
         }
-        const row = btn.closest('tr');
-        if (row) row.remove(); else location.reload();
-        return true;
-      } catch (err){
-        alert('Error de red: ' + err.message);
-        return false;
-      }
-    }
-

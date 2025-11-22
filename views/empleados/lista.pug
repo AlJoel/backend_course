@@ -1,54 +1,62 @@
 extends ../layout
 
 block content
-  h1= titulo
-  a(href="/empleados/nuevo") + Nuevo empleado
-  if empleados && empleados.length
-    table
-      thead
-        tr
-          th Nombre
-          th DNI
-          th Rol
-          th Acciones
-      tbody
-        each e in empleados
-          tr
-            td= e.nombre
-            td= e.dni
-            td= e.rol
-            td
-              form(method="get" action=`/empleados/${e._id}/editar` style="display:inline")
-                button(type="submit" class="btn-editar") Editar
-              |  
-              button(type="button" data-action="delete" data-id=e._id onclick="return confirmarEliminar(this)") Eliminar
-  else
-    p No hay empleados cargados.
+    .page-header
+        h1= titulo
+        a.btn.btn-primary(href="/empleados/nuevo") + Nuevo empleado
 
-  script.
-    async function confirmarEliminar(btn){
-      if(!confirm('¿Eliminar este empleado?')) return false;
-      const id = btn.dataset.id;
-      try {
-        const res = await fetch(`/empleados/${id}`, {
-          method: 'DELETE',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        if(!res.ok){
-          let msg = 'Error al eliminar';
-          try { const data = await res.json(); 
-          if (data?.mensaje) msg = data.mensaje; } 
-          catch {}
-          alert(msg);
-          return false;
+    if empleados && empleados.length
+        table
+            thead
+                tr
+                    th Nombre
+                    th DNI
+                    th Rol
+                    th Acciones
+            tbody
+                each e in empleados
+                    tr
+                        td= e.nombre
+                        td= e.dni
+                        td= e.rol
+                        td
+                            form(method="get" action=`/empleados/${e._id}/editar` style="display:inline")
+                                button(type="submit" class="btn btn-secondary btn-small btn-table") Editar
+                            button(
+                                type="button"
+                                class="btn btn-danger btn-small btn-table"
+                                data-action="delete"
+                                data-id=e._id
+                                onclick="return confirmarEliminar(this)"
+                            ) Eliminar
+    else
+        p No hay empleados cargados.
+
+    script.
+        async function confirmarEliminar(btn){
+            if(!confirm('¿Eliminar este empleado?')) return false;
+            const id = btn.dataset.id;
+            try {
+                const res = await fetch(`/empleados/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                if(!res.ok){
+                    let msg = 'Error al eliminar';
+                    try {
+                        const data = await res.json();
+                        if (data?.mensaje) msg = data.mensaje;
+                    } catch {}
+                    alert(msg);
+                    return false;
+                }
+                const row = btn.closest('tr');
+                if (row) row.remove(); else location.reload();
+                return true;
+            } catch (err){
+                alert('Error de red: ' + err.message);
+                return false;
+            }
         }
-        const row = btn.closest('tr');
-        if (row) row.remove(); else location.reload();
-        return true;
-      } catch (err){
-        alert('Error de red: ' + err.message);
-        return false;
-      }
-    }

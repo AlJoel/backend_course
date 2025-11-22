@@ -1,51 +1,57 @@
 extends ../layout
 
 block content
-  h1 Editar empleado
-  if empleado
-    form#formEditarEmpleado(data-id=empleado._id)
-      div
-        label(for="nombre") Nombre:
-        input(type="text" name="nombre" id="nombre" required value=empleado.nombre)
-      div
-        label(for="dni") DNI:
-        input(type="text" name="dni" id="dni" required value=empleado.dni)
-      div
-        label(for="rol") Rol:
-        select(name="rol" id="rol" required)
-          option(value="Administrativo" selected=empleado.rol==='Administrativo') Administrativo
-          option(value="Médico" selected=empleado.rol==='Médico') Médico
-      button(type="submit") Guardar cambios
-      a(href="/empleados") Cancelar
+    .page-header
+        h1 Editar empleado
 
-    script.
-      document.getElementById('formEditarEmpleado').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const form = e.target;
-        const empleadoId = form.getAttribute('data-id');
-        const data = {
-          nombre: form.nombre.value,
-          dni: form.dni.value,
-          rol: form.rol.value
-        };
-        try {
-          const res = await fetch(`/empleados/${empleadoId}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(data)
-          });
-          const result = await res.json();
-          if (res.ok) {
-            window.location.href = '/empleados';
-          } else {
-            alert(result.mensaje || 'Error al actualizar empleado');
-          }
-        } catch (err) {
-          alert('Error de red: ' + err.message);
-        }
-      });
-  else
-    p Empleado no encontrado.
+    if empleado
+        form#formEditarEmpleado(data-id=empleado._id class="form-card")
+            .form-group
+                label(for="nombre") Nombre
+                input(type="text" name="nombre" id="nombre" required value=empleado.nombre)
+
+            .form-group
+                label(for="dni") DNI
+                input(type="text" name="dni" id="dni" required value=empleado.dni)
+
+            .form-group
+                label(for="rol") Rol
+                select(name="rol" id="rol" required)
+                    option(value="Administrativo" selected=empleado.rol==='Administrativo') Administrativo
+                    option(value="Médico" selected=empleado.rol==='Médico') Médico
+
+            .form-actions
+                button(type="submit" class="btn btn-primary") Guardar cambios
+                a(href="/empleados" class="btn btn-secondary") Cancelar
+
+        script.
+            document.getElementById('formEditarEmpleado').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const form = e.target;
+                const empleadoId = form.getAttribute('data-id');
+                const data = {
+                    nombre: form.nombre.value,
+                    dni: form.dni.value,
+                    rol: form.rol.value
+                };
+                try {
+                    const res = await fetch(`/empleados/${empleadoId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await res.json();
+                    if (res.ok) {
+                        window.location.href = '/empleados';
+                    } else {
+                        alert(result.mensaje || 'Error al actualizar empleado');
+                    }
+                } catch (err) {
+                    alert('Error de red: ' + err.message);
+                }
+            });
+    else
+        p Empleado no encontrado.

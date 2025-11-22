@@ -1,23 +1,24 @@
 doctype html
 html(lang="es")
-  head
-    meta(charset="utf-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    title #{titulo} | Backend PFO1
-    link(rel="stylesheet" href="/css/styles.css")
-  body
-    header
-      nav
-        a(href="/") Inicio
-        |  | 
-        a(href="/empleados") Empleados
-        |  | 
-        a(href="/turnos") Turnos
-        |  | 
-        a(href="/pacientes") Pacientes
-          |  | 
-          a(href="/logout" style="color: red; float: right;") Cerrar sesión
-    main
-      block content
-    footer
-      p © #{new Date().getFullYear()} - SePrice System
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title #{titulo} | Backend PFO1
+        link(rel="stylesheet" href="/css/styles.css")
+    body
+        header.site-header
+            nav.navbar
+                .navbar-left
+                    a.navbar-brand(href="/") Salud Integral
+                    ul.nav-links
+                        li: a(href="/") Inicio
+                        li: a(href="/empleados") Empleados
+                        li: a(href="/turnos") Turnos
+                        li: a(href="/pacientes") Pacientes
+                .navbar-right
+                    a.nav-link.logout(href="/logout") Cerrar sesión
+        main
+            .container
+                block content
+        footer.site-footer
+            p © #{new Date().getFullYear()} - SePrice System

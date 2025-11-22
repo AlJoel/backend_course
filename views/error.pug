@@ -1,6 +1,11 @@
 extends layout
 
 block content
-  h1 Error de acceso
-  p= mensaje || 'No tienes permisos para ver esta página.'
-  a(href='/') Ir al menú principal
+    .page-header
+        h1 Error de acceso
+
+    .form-card
+        p= mensaje || 'No tienes permisos para ver esta página.'
+
+        .form-actions
+            a.btn.btn-secondary(href='/') Ir al menú principal

@@ -1,12 +1,12 @@
 extends layout
 
 block content
-  h1= titulo
-  p Bienvenido al sistema
-  ul
-    li: a(href="/empleados") Ver empleados
-    li: a(href="/empleados/nuevo") Nuevo empleado
-    li: a(href="/turnos") Ver turnos
-    li: a(href="/turnos/nuevo") Nuevo turno
-    li: a(href="/pacientes") Ver pacientes
-    li: a(href="/pacientes/nuevo") Nuevo paciente
+    h1= titulo
+    p Bienvenido al sistema de gestión de la clínica Salud Integral.
+    ul.home-list
+        li: a(href="/empleados") Ver empleados
+        li: a(href="/empleados/nuevo") Nuevo empleado
+        li: a(href="/turnos") Ver turnos
+        li: a(href="/turnos/nuevo") Nuevo turno
+        li: a(href="/pacientes") Ver pacientes
+        li: a(href="/pacientes/nuevo") Nuevo paciente
