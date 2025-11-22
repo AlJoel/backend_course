@@ -35,10 +35,7 @@ La aplicación utiliza arquitectura MVC, autenticación con passport, vistas din
 - Dotenv  
 
 ## Usuario Administrador 
-Único usuario con acceso completo al CRUD de Empleados:
-
-_Usuario: admin
-_Contraseña: admin123
+Único usuario con acceso completo al CRUD de Empleados
 
 
 
@@ -52,12 +49,6 @@ _Contraseña: admin123
 .env
 index.js
 
-
-## Configuración del archivo .env
-
-PORT=3000
-MONGODB_URI=mongodb+srv://smat_db_user:3Mui7hXah64H4APz@cluster0.okbasto.mongodb.net/?appName=Cluster0
-SECRET=claveSecreta123
 
 
 ## Funcionalidades Principales
